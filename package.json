@@ -1,0 +1,56 @@
+{
+  "name": "magpie-opendesign-local-routing",
+  "version": "1.0.3-rc.2",
+  "description": "Windows-only Magpie OpenDesign multi-account routing with DPAPI credentials and live quota guards",
+  "author": "yuki (https://github.com/Yuuuuuukit)",
+  "homepage": "https://github.com/Yuuuuuukit/magpie-opendesign-local-routing#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yuuuuuukit/magpie-opendesign-local-routing.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Yuuuuuukit/magpie-opendesign-local-routing/issues"
+  },
+  "type": "module",
+  "main": "./index.mjs",
+  "files": [
+    "index.mjs",
+    "core.mjs",
+    "vault.mjs",
+    "models.mjs",
+    "rates.mjs",
+    "README.md",
+    "LICENSE",
+    "NOTICE.md",
+    "CHANGELOG.md",
+    "Check-Windows-DPAPI.ps1",
+    "docs/*.md",
+    "tests"
+  ],
+  "keywords": [
+    "magpie",
+    "windows",
+    "opendesign",
+    "quota",
+    "multi-account"
+  ],
+  "license": "MIT",
+  "os": [
+    "win32"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "magpie": {
+    "name": "OpenDesign Local Routing",
+    "summary": {
+      "zh": "Windows 手动添加多账号，DPAPI 加密凭据，原生 5h/7d 额度卡片与智能路由门禁。",
+      "en": "Manual multi-account sign-in, DPAPI-protected keys, native 5h/7d quota windows and Magpie routing."
+    },
+    "maxConcurrency": 3
+  },
+  "scripts": {
+    "test": "node --test ./tests/*.test.mjs",
+    "check": "node --check ./index.mjs && node --check ./core.mjs && node --check ./vault.mjs && node --check ./models.mjs && node --check ./rates.mjs"
+  }
+}

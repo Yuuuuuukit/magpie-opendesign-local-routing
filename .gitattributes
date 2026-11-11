@@ -1,0 +1,13 @@
+* text=auto
+*.mjs text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.ps1 text eol=crlf
+*.zip binary
+
+# 不放进用 `git archive` 生成的桌面安装 ZIP
+.github export-ignore
+.gitignore export-ignore
+.gitattributes export-ignore
