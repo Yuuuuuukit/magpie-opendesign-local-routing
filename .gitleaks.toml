@@ -1,0 +1,36 @@
+title = "OpenDesign Local Routing - secret scan"
+
+# Inherit upstream's broad vendor/API key detectors.
+[extend]
+useDefault = true
+
+# Control-plane credentials (never use these for inference).
+[[rules]]
+id = "opendesign-control-key"
+description = "OpenDesign Control Key (vela_ctrl_)"
+regex = '''vela_ctrl_[A-Za-z0-9_-]{12,}'''
+keywords = ["vela_ctrl_"]
+tags = ["opendesign", "control", "credential"]
+
+  # Exact, fictional values checked into tests. Do NOT exclude tests/ wholesale.
+  [[rules.allowlists]]
+  description = "Known synthetic Control Keys in current tests only"
+  condition = "AND"
+  regexTarget = "secret"
+  paths = ['''(^|/)tests/(core|vault)\.test\.mjs$''']
+  regexes = ['''^vela_ctrl_(?:ABCDEFGHIJKLMNOP|SAMPLETESTSECRET|OLDTESTSECRET|NEWTESTSECRET|DISPOSABLE_TEST)$''']
+
+# Model-plane runtime keys (never send these to amr-api).
+[[rules]]
+id = "opendesign-runtime-key"
+description = "OpenDesign Runtime Key (sk-amr-)"
+regex = '''sk-amr-[A-Za-z0-9_-]{12,}'''
+keywords = ["sk-amr-"]
+tags = ["opendesign", "runtime", "credential"]
+
+  [[rules.allowlists]]
+  description = "Known synthetic Runtime Keys in current tests only"
+  condition = "AND"
+  regexTarget = "secret"
+  paths = ['''(^|/)tests/(core|vault)\.test\.mjs$''']
+  regexes = ['''^sk-amr-(?:abcdefghijklmnop|SAMPLETESTSECRET|OLDTESTSECRET|DISPOSABLE_TEST)$''']

@@ -41,8 +41,8 @@ git archive --format=zip --prefix=magpie-opendesign-local-routing/ -o ../magpie-
 
 ## 仓库公开前
 
-- [ ] 启用 Private vulnerability reporting（Settings → Code security），并确认 [安全说明](SECURITY.md) 中的渠道可用。
-- [ ] 启用 secret scanning 和 push protection。
-- [ ] 检查完整的 git 历史：`git log -p` 里不能有凭据或个人信息。`.gitignore` 无法保护已经入库的内容。
+- [ ] 保持 Private 直到安全验收通过。公开后在可用时启用 Private vulnerability reporting（Settings → Advanced Security），并确认 [安全说明](SECURITY.md) 中的报告渠道。
+- [ ] GitHub Secret Protection / push protection 若当前个人 Private 仓库不可用，记录为“不适用”，不要为了寻找开关而提前公开；若可用则启用。
+- [ ] 确认 [Gitleaks 扫描](SECRET_SCANNING.md) 的 PR / main 检查已通过，并执行全历史审计。扫描不能代替对已泄漏密钥的轮换；`.gitignore` 无法保护已经入库的内容。
 - [ ] README 与 [验收状态](VERIFICATION.md) 的状态和实际一致，未完成的验收项如实保留。
 - [ ] 阅读 OpenDesign 服务条款中关于多账号使用和接口访问的约定（这不是法律意见）。
