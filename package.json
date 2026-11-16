@@ -1,6 +1,6 @@
 {
   "name": "magpie-opendesign-local-routing",
-  "version": "1.0.3-rc.2",
+  "version": "1.0.3",
   "description": "Windows-only Magpie OpenDesign multi-account routing with DPAPI credentials and live quota guards",
   "author": "yuki (https://github.com/Yuuuuuukit)",
   "homepage": "https://github.com/Yuuuuuukit/magpie-opendesign-local-routing#readme",

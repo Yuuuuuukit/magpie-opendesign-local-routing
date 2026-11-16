@@ -25,8 +25,8 @@ Windows 上的 POSIX 权限位（`0700` / `0600`）不能替代 ACL，插件也�
 
 请**不要**在公开的 Issue 里贴漏洞细节、密钥、`.dpapi` 文件、`plugin-auth.json` 或 API 响应原文。
 
-- 首选：使用 GitHub 的私密漏洞报告（仓库页 Security → Report a vulnerability）。该入口需要维护者在仓库设置中启用（Settings → Code security → Private vulnerability reporting），仓库公开后才对外可用。
-- 在该入口可用之前：请通过 GitHub 联系维护者 yuki（用户名 Yuuuuuukit），只说明“有安全问题需要私下沟通”，不要在公开渠道写细节。
+- 首选：使用 [GitHub 私密漏洞报告](https://github.com/Yuuuuuukit/magpie-opendesign-local-routing/security/advisories/new)（仓库页 Security → Report a vulnerability）。
+- 如暂时无法访问该入口：请通过 GitHub 联系维护者 yuki（用户名 Yuuuuuukit），只说明“有安全问题需要私下沟通”，不要在公开渠道写细节。
 - 如果密钥可能已经泄露，请先在 OpenDesign 厂商侧轮换 Control Key 与 Runtime Key。
 
 ## 发布物

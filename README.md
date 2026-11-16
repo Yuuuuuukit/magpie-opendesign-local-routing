@@ -2,7 +2,7 @@
 
 magpie 插件，用于管理多个 OpenDesign 账户，接入更好的路由调度。仅支持 **Magpie（Windows）**。
 
-> **状态：候选版 `1.0.3-rc.2`。** 核心功能已在 Windows + Magpie 上实际运行，但验收清单尚未全部完成，尤其是 Responses / Anthropic 两种协议的真实请求、新增账号的完整界面流程和路由故障转移，详见 [验收状态](docs/VERIFICATION.md)。请先在测试环境试用，再迁移日常使用。
+> **正式版 `1.0.3`。** Windows 自动化检查与隔离宿主测试通过，维护者已确认三种协议的真实请求和正常新增账号可用。故障转移、全部账号不可用及拒绝/中断场景尚未完成真实故障验收；完整覆盖范围与已知限制见 [验收状态](docs/VERIFICATION.md)。
 >
 > 本项目是非官方社区改造版，不代表 Magpie、OpenDesign 或 magpie-community 背书。
 
@@ -17,7 +17,7 @@ magpie 插件，用于管理多个 OpenDesign 账户，接入更好的路由调�
 
 ## 工作方式
 
-- **添加账号**：先用 Control Key + Workspace ID 读取额度，有 Runtime Key 时再校验模型目录。校验通过后，在完成登录时才用 DPAPI 保存；取消登录不会留下凭据文件。
+- **添加账号**：先用 Control Key + Workspace ID 读取额度，有 Runtime Key 时再校验模型目录。校验通过后，在完成登录时才用 DPAPI 保存；完成回调开始保存前取消不会写入凭据。写入瞬间取消可能留下孤立密文，详见 [安全说明](docs/SECURITY.md)。
 - **额度轮询**：读取 5h / 7d 窗口与可选的套餐摘要。路由账号会额外做一次只读的 `GET /v1/models` 来校验 Runtime Key：所需凭据都有效时通知 Magpie 清除旧的“已退出登录”标记；401/403 标记失效；网络或 5xx 等临时故障保持原状态。
 - **模型请求**：先实时读取该账号的额度，再转发到 `amr-link.open-design.ai`。流式响应原样透传，已经开始的流式回复不会被自动重放。
 
@@ -29,7 +29,7 @@ magpie 插件，用于管理多个 OpenDesign 账户，接入更好的路由调�
 
 ## 安装
 
-1. 把本仓库克隆（或下载 ZIP 解压）到**由你本人控制的稳定目录**，不要放在多人可写或网盘同步的位置。目录顶层应有 `package.json`、`index.mjs`、`vault.mjs`。
+1. 从 [v1.0.3 Release](https://github.com/Yuuuuuukit/magpie-opendesign-local-routing/releases/tag/v1.0.3) 下载 `magpie-opendesign-local-routing-1.0.3-desktop.zip` 并解压（也可克隆仓库），放到**由你本人控制的稳定目录**，不要放在多人可写或网盘同步的位置。目录顶层应有 `package.json`、`index.mjs`、`vault.mjs`。
 2. Magpie → 插件 → 添加插件 → 本地文件夹，选择该目录。
 3. 供应商 → **OpenDesign Local (DPAPI)** → 添加账号，依次填写备注、Control Key、Workspace ID 和可选的 Runtime Key。
 4. 在用量页核对 5h / 7d 窗口和重置时间，按 [路由配置](docs/ROUTING.md) 在测试环境验证后，再迁移日常使用。
@@ -43,7 +43,7 @@ magpie 插件，用于管理多个 OpenDesign 账户，接入更好的路由调�
 - DPAPI 能防止其他 Windows 用户解密这些文件，但**不能**防御已被控制的当前用户账户，也不能防御被他人改写的插件源码。
 - 详细说明、已知限制与漏洞报告方式见 [安全说明](docs/SECURITY.md)。
 
-> **付费风险**：客户端的额度预检只能降低“套餐用尽后走钱包付费”的风险。并发请求和长请求仍可能在服务端跨过额度边界，**不能保证零钱包扣费**，建议同时在厂商侧设置付费限制。
+> **付费风险**：客户端的额度预检只能降低“套餐用尽后走钱包付费”的风险。并发请求和长请求仍可能在服务端跨过额度边界，**不能保证不产生钱包费用**，建议同时在厂商侧设置付费限制。
 
 ## 开发与测试
 

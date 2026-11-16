@@ -4,26 +4,26 @@
 
 ## 自动运行
 
-- Workflow: \`.github/workflows/secret-scan.yml\`
+- Workflow: `.github/workflows/secret-scan.yml`
 - 触发：main 分支 push、所有 PR、每周一 UTC 03:19、手动 workflow_dispatch
 - 工具：Gitleaks v8.30.1（容器镜像固定 Linux amd64 digest）
-- 扫描范围：checkout fetch-depth=0 后，\`git --log-opts="--all --full-history"\` 扫描所有已获取、可达的 Git 提交；另扫当前检出的文件
-- 安全限制：扫描容器无网络、文件系统只读、\`--redact=100\`；不上传带有发现内容的报告 Artifact
-- 规则：继承 Gitleaks 默认规则，并为 \`vela_ctrl_\`、\`sk-amr-\` 增加专用规则；对已知虚构测试值设置**精确白名单**，绝不按整个 tests 目录排除
+- 扫描范围：checkout fetch-depth=0 后，`git --log-opts="--all --full-history"` 扫描所有已获取、可达的 Git 提交；另扫当前检出的文件
+- 安全限制：扫描容器无网络、文件系统只读、`--redact=100`；不上传带有发现内容的报告 Artifact
+- 规则：继承 Gitleaks 默认规则，并为 `vela_ctrl_`、`sk-amr-` 增加专用规则；对已知虚构测试值设置**精确白名单**，绝不按整个 tests 目录排除
 
-**范围限制：** GitHub 删除或重写历史后，已经不可达的提交不在此次 \`--all\` 扫描之内。已经泄漏的密钥需要在 OpenDesign 平台**撤销/轮换**；把字符串从 HEAD 删除或让扫描变绿不能解决泄漏。
+**范围限制：** GitHub 删除或重写历史后，已经不可达的提交不在此次 `--all` 扫描之内。已经泄漏的密钥需要在 OpenDesign 平台**撤销/轮换**；把字符串从 HEAD 删除或让扫描变绿不能解决泄漏。
 
 ## 手动审计
 
 在本地安装 Gitleaks v8.30.1，并在完整克隆中执行：
 
-\`\`\`powershell
+```powershell
 git fetch --all --tags --prune
 gitleaks git --config .gitleaks.toml --log-opts="--all --full-history" --redact=100 .
 gitleaks dir --config .gitleaks.toml --redact=100 .
-\`\`\`
+```
 
-不要将未脱敏的扫描报告、真实密钥、账号配置、\`.dpapi\` 文件或完整 API 响应推送、复制到 Issue 或上传为 CI Artifact。
+不要将未脱敏的扫描报告、真实密钥、账号配置、`.dpapi` 文件或完整 API 响应推送、复制到 Issue 或上传为 CI Artifact。
 
 ## 故障处理
 

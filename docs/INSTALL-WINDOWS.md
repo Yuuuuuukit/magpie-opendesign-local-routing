@@ -4,7 +4,7 @@
 
 ## 新安装
 
-1. 克隆本仓库，或下载 ZIP 并解压到新目录，确认根目录直接包含 `package.json`、`index.mjs`、`vault.mjs`。
+1. 从 [v1.0.3 Release](https://github.com/Yuuuuuukit/magpie-opendesign-local-routing/releases/tag/v1.0.3) 下载 `magpie-opendesign-local-routing-1.0.3-desktop.zip` 并解压到新目录（也可克隆仓库），确认插件目录直接包含 `package.json`、`index.mjs`、`vault.mjs`。
 2. Magpie → 插件 → 添加插件 → 本地文件夹，选择该目录。
 3. 供应商 → **OpenDesign Local (DPAPI)** → 添加账号：备注名称、Control Key（`vela_ctrl_…`）、Workspace ID、Runtime Key（`sk-amr-…`，仅监控时留空）。各字段必须属于同一个账号。
 4. 校对额度和重置时间，完成 [验收状态](VERIFICATION.md) 里的检查后，再迁移日常请求。
