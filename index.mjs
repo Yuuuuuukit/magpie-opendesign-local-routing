@@ -7,7 +7,7 @@ import {
   PROVIDER, CONTROL, MODEL_API, HOURS5, text,
   validWorkspace, normalizeInput, quotaWindows, blockedUsage,
   usable, seedModels, liveModels, modelWire, allowedModelUrl, responseForBlock,
-  timestamp
+  timestamp, formatWalletBalance
 } from './core.mjs'
 
 const TEN_SECONDS = 10000
@@ -170,6 +170,7 @@ function createPlugin({ configDir, fetcher = globalThis.fetch, vault = createVau
         requestJSON(fetcher, CONTROL, '/api/v1/billing/summary', keys.controlKey),
       ])
       const summary = billing.status === 'fulfilled' && billing.value.ok ? billing.value.body : null
+      const balance = formatWalletBalance(reading.body?.balanceUsd) ?? formatWalletBalance(summary?.balanceUsd)
       const signIn = runtime.status === 'fulfilled' ? 'renewed' : expired(runtime.reason) ? 'expired' : 'kept'
       const error = runtime.status === 'rejected'
         ? expired(runtime.reason) ? safeError(runtime.reason) : 'Runtime Key 暂时无法验证，登录状态保持不变'
@@ -179,6 +180,7 @@ function createPlugin({ configDir, fetcher = globalThis.fetch, vault = createVau
         user: text(auth.accountId),
         plan: planName(summary),
         windows: reading.windows,
+        ...(balance ? { balance } : {}),
         ...(renewEnd ? { until: renewEnd } : {}),
         ...(text(summary?.subscriptionStatus) ? {
           renew: summary?.subscriptionCancelAtPeriodEnd ? 'off' : 'auto'

@@ -60,6 +60,8 @@ test('installed Windows Magpie host loads the release with isolated accounts and
     assert.equal(readdirSync(join(root, 'opendesign-local-routing-vault')).length, 2)
     const usageA = (await rpc('usage', { provider: 'opendesign-local', account: accounts.A })).value
     const usageB = (await rpc('usage', { provider: 'opendesign-local', account: accounts.B })).value
+    assert.equal(usageA.balance, '$12.40')
+    assert.equal(usageB.balance, '$0.00')
     assert.equal(usageA.windows[0].used, 10)
     assert.equal(usageB.windows[0].used, 30)
     assert.equal(usageA.signIn, 'renewed')
