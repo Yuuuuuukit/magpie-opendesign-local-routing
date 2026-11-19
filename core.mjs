@@ -54,6 +54,12 @@ function num(v) {
   return null
 }
 
+export function formatWalletBalance(value) {
+  if (typeof value === 'string' && /^0[xbo]/i.test(value.trim())) return undefined
+  const amount = num(value)
+  return amount === null ? undefined : `$${amount.toFixed(2)}`
+}
+
 // On invalid/incomplete quota do NOT pretend zero use. Throw so the caller
 // produces a hard block window and prevents any account routing.
 export function quotaWindows(plan) {

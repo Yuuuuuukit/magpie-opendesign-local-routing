@@ -1,6 +1,6 @@
 {
   "name": "magpie-opendesign-local-routing",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Windows-only Magpie OpenDesign multi-account routing with DPAPI credentials and live quota guards",
   "author": "yuki (https://github.com/Yuuuuuukit)",
   "homepage": "https://github.com/Yuuuuuukit/magpie-opendesign-local-routing#readme",
@@ -44,8 +44,8 @@
   "magpie": {
     "name": "OpenDesign Local Routing",
     "summary": {
-      "zh": "Windows 手动添加多账号，DPAPI 加密凭据，原生 5h/7d 额度卡片与智能路由门禁。",
-      "en": "Manual multi-account sign-in, DPAPI-protected keys, native 5h/7d quota windows and Magpie routing."
+      "zh": "Windows 手动添加多账号，DPAPI 加密凭据，显示 5h/7d 套餐额度与钱包余额，支持智能路由门禁。",
+      "en": "Manual multi-account setup, DPAPI-protected keys, 5h/7d quota windows, wallet balance and Magpie routing."
     },
     "maxConcurrency": 3
   },

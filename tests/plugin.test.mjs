@@ -20,7 +20,7 @@ function mockServer() {
     if (url.includes('/billing/preflight')) {
       if (outage) throw new Error('mock outage')
       const a=bearer.includes('AKEY')?'A': 'B'
-      return js({codingPlan:{eligible:true,windows:[w5(used[a][0]),w7(used[a][1])]}})
+      return js({balanceUsd:'12.40',codingPlan:{eligible:true,windows:[w5(used[a][0]),w7(used[a][1])]}})
     }
     if (url.endsWith('/billing/summary')) return js({membershipTier:'go'})
     if (url.endsWith('/models')) return js({data:[{id:'deepseek-v4.1-flash'}]})
@@ -76,6 +76,7 @@ test('fails closed at 5h >=100 even if 7d remains; preflight outage blocks model
   const a=await login(hooks,'A')
   mock.used.A=[100,20]
   const usage=await hooks.auth.usage(async()=>a)
+  assert.equal(usage.balance,'$12.40')
   assert.equal(usage.windows[0].used,100)
   assert.equal(usage.signIn, 'renewed')
   const load=await hooks.auth.loader(async()=>a)
@@ -89,6 +90,30 @@ test('fails closed at 5h >=100 even if 7d remains; preflight outage blocks model
   const bad=await hooks.auth.usage(async()=>a)
   assert.equal(bad.windows[0].used,100)
   assert.equal(bad.error.length>0,true)
+})
+
+test('usage displays the account wallet balance when billing reports a valid USD amount', async () => {
+  const mock = mockServer()
+  for (const { preflight, summary, summaryStatus, expected } of [
+    { preflight: 0, summary: '9.99', expected: '$0.00' },
+    { preflight: '4.5', summaryStatus: 503, expected: '$4.50' },
+    { summary: '9.99', expected: '$9.99' },
+    { preflight: ' ', summary: 2.75, expected: '$2.75' },
+    { preflight: '0x10', summary: 2.75, expected: '$2.75' },
+    { preflight: null, summary: false, expected: undefined },
+    { expected: undefined },
+  ]) {
+    const hooks = createPlugin({ vault: memoryVault(), fetcher: (url, init) => {
+      if (url.includes('/billing/preflight')) {
+        return js({ balanceUsd: preflight, codingPlan: { eligible: true, windows: [w5(10), w7(20)] } })
+      }
+      if (url.endsWith('/billing/summary')) return js({ membershipTier: 'go', balanceUsd: summary }, summaryStatus)
+      return mock.fetcher(url, init)
+    } })
+    const auth = await login(hooks, 'A', true)
+    const usage = await hooks.auth.usage(async () => auth)
+    assert.equal(usage.balance, expected, JSON.stringify({ preflight, summary, summaryStatus }))
+  }
 })
 
 test('monitor-only account has quota card but no routed models / calls', async()=>{

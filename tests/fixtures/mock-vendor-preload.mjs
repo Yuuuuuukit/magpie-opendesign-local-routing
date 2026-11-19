@@ -13,7 +13,7 @@ globalThis.fetch = async (input, init = {}) => {
     if (state.outage) return json({}, 503)
     const account = url.pathname.includes('/ws-A/') ? 'A' : 'B'
     if (headers.get('authorization') !== `Bearer vela_ctrl_${account}KEY1234567890`) return json({}, 401)
-    return json({ codingPlan: { eligible: true, windows: [
+    return json({ balanceUsd: account === 'A' ? '12.40' : 0, codingPlan: { eligible: true, windows: [
       { durationSeconds: 18000, usedCredits: state.used[account], limitCredits: 100, resetsAt: '2030-11-11T20:00:00Z' },
       { durationSeconds: 604800, usedCredits: 20, limitCredits: 100, resetsAt: '2030-11-17T20:00:00Z' },
     ] } })
